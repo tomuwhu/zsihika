@@ -26,18 +26,21 @@
             {{ option.dname }}
         </option>
       </b-select>
-      <span v-if="szd.length===1"> 
-        <button class="button" @click="adocs=szd[0]">
-        {{ szd[0].dname }}
-        </button>
-        &nbsp; 
-        <button class="button is-primary" 
-                @click="adocs=szd[0]">Szerkeszt</button>
-      </span>  
+      <button class="button" 
+              @click="setad(szd[0])"
+              v-if="szd.length===1">
+          {{ szd[0].dname }}
+          </button>
       </div>
-      <div class="column">
+      <div class="column" style="text-align:right;">
+        <span v-if="szd.length===1"> 
+          &nbsp; 
+          <button class="button is-primary" 
+                  @click="adocs=szd[0]">Szerkeszt</button>
+        </span>  
       </div>
     </div>
+    <hr>
     {{adocs}}
   </div>
 </template>
@@ -55,7 +58,15 @@ export default {
     wd() {
       if (this.szd.length===1) {
         this.adocs=this.szd[0]
+        this.loadall()
       }
+    },
+    setad(doc) {
+      this.adocs=doc
+      this.loadall()
+    },
+    loadall() {
+      this.dk=''
     }
   },
   mounted() {
@@ -68,13 +79,11 @@ export default {
   computed: {
     seld: {
       get() {
-        let dt = this .docs
-                      .filter( v => RegExp(this.dk,'i').test(v.dname) )
-            if (dt.length===1) return dt[0]
-            else return this.adocs
+        return this.adocs.did
       },
       set(nw) {
         this.adocs = this.docs.find( v => v.did === nw )
+        this.loadall()
       }
     },
     szd() {
@@ -94,7 +103,7 @@ export default {
 
 <style>
 #app {
-  
+  margin:20px;
 }
 h1.eh {
    font-size: 40px;
