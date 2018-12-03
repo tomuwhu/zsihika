@@ -41,7 +41,17 @@
       </div>
     </div>
     <hr>
-    {{adocs}}
+    <span v-if="adocs.dname">
+      <button class="button">
+        {{adocs.dname}}
+      </button> &nbsp;
+      <span :key="oldal" 
+              v-for="oldal in Array(adocs.osz).fill().map( (v,k) => k+1 )">
+      <button class="button is-primary">
+        {{oldal}}. oldal
+      </button> &nbsp;
+      </span>
+    </span>
   </div>
 </template>
 
