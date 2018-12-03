@@ -1,0 +1,22 @@
+{
+  "name": "zsihika",
+  "version": "1.0.0",
+  "description": "Kereső  a Szegedi Zsidó Hitközösség Archívumához",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomuwhu/zsihika.git"
+  },
+  "keywords": [
+    "kereső"
+  ],
+  "author": "Dr. Németh Tamás",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tomuwhu/zsihika/issues"
+  },
+  "homepage": "https://github.com/tomuwhu/zsihika#readme"
+}
