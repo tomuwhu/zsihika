@@ -1,8 +1,15 @@
 <template>
   <div id="app">
     <br>
-    <h1 class="eh">Editor</h1>
-    {{docs}}
+    <h1 class="eh">Archívum - kulcsszavazás</h1>
+    <b-select placeholder="Select a name">
+                <option
+                    v-for="option in docs"
+                    :value="option.did"
+                    :key="option.did">
+                    {{ option.user.first_name }}
+                </option>
+            </b-select>
   </div>
 </template>
 
@@ -19,6 +26,12 @@ export default {
         .then( resp => {
           this.docs = resp.data
         })
+  },
+  computed: {
+    szd() {
+      return this .docs
+                  //.filter( v => )
+    }
   }
 }
 </script>
