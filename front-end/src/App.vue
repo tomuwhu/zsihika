@@ -109,10 +109,10 @@ export default {
   },
   computed: {
     klsz() {
-      return this .kl
+      let szk = this .kl
                   .filter( v => RegExp(this.kk,'i').test(v.kulcsszo) )
                   .filter( v => !this.kivk.find( q => q.id===v.id ) )
-                  .slice(0,10)
+      return  szk.length<10 ? szk : []
     }
   }
 }

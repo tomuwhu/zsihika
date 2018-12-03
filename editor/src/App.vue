@@ -1,28 +1,37 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <br>
+    <h1 class="eh">Editor</h1>
+    {{docs}}
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+let backend="http://localhost:3000"
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  data: () => ({
+    docs: []
+  }),
+  mounted() {
+    this.axios
+        .get(`${ backend }/docs`)
+        .then( resp => {
+          this.docs = resp.data
+        })
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  
+}
+h1.eh {
+   font-size: 40px;
+   text-align: center;
+   font-family: 'Offside', cursive;
+   text-shadow: 1px 1px 4px #0038b8;
+   color: #0038b8;
 }
 </style>

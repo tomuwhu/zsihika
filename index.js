@@ -29,6 +29,21 @@ app.get(/kulcsszavak/, (req, res) => {
         })
 })
 
+app.get(/docs/, (req, res) => {
+    let nyt = {}
+    sql.query(
+        `SELECT     *
+         FROM       docs 
+         ORDER BY   dname`,
+        (err, dl) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send(dl)
+            }
+        })
+})
+
 app.use('/', express.static(static_folder))
 
 app.listen(3000)
