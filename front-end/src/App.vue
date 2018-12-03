@@ -93,7 +93,8 @@ export default {
           .filter( v => 
             v.id===kszo.id 
           )
-          .length ? 1 : kivk.push(kszo)
+          .length ? 1 : this.kivk.push(kszo)
+      this.kk=''
     }
   },
   mounted() {
@@ -110,6 +111,7 @@ export default {
     klsz() {
       return this .kl
                   .filter( v => RegExp(this.kk,'i').test(v.kulcsszo) )
+                  .filter( v => !this.kivk.find( q => q.id===v.id ) )
                   .slice(0,10)
     }
   }
