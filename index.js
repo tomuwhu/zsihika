@@ -14,32 +14,19 @@ const sql = mysql.createConnection({
 
 app.use(cors())
 
-app.get(/getalldata/, (req, res) => {
+app.get(/kulcsszavak/, (req, res) => {
     let nyt = {}
     sql.query(
-        `SELECT * FROM user ORDER BY nev`,
-        (err, users) => {
+        `SELECT     *
+         FROM       ksz 
+         ORDER BY   kulcsszo`,
+        (err, kszl) => {
             if (err) {
                 res.send(err)
             } else {
-                sql.query(
-                    `SELECT     *
-                     FROM       meccsek 
-                     ORDER BY   mikor`,
-                    (err, meccsek) => {
-                        if (err) {
-                            res.send(err)
-                        } else {
-                            res.send({
-                                users,
-                                meccsek
-                            })
-                        }
-                    })
+                res.send(kszl)
             }
-
-        }
-    )
+        })
 })
 
 app.use('/', express.static(static_folder))
