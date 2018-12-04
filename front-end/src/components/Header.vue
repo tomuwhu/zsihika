@@ -17,7 +17,7 @@ export default {
 <style scoped>
  @import url('https://fonts.googleapis.com/css?family=Offside');
  h1 {
-   font-size: 30px;
+   font-size: 35px;
    text-align: center;
    font-family: 'Offside', cursive;
    text-shadow: 1px 1px 4px #0038b8;

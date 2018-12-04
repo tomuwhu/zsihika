@@ -122,6 +122,14 @@ export default {
 #app {
   margin:20px;
 }
+.button.is-primary {
+  background-color: #2c56b9!important;
+  box-shadow: 1px 1px 3px #031133;
+}
+.input:focus, .select select:focus, .button:focus {
+  box-shadow: 1px 1px 3px #1a2a52!important;
+  border-color: #345097!important;
+}
 .li {
   cursor:pointer ;
 }

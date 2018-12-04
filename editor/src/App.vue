@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <br>
-    <h1 class="eh">Archívum - kulcsszavazás</h1>
+    <h1 class="eh">Szegedi Zsidó Archívum - Kulcsszavazó</h1>
     <br>
     <br>
     <div class="columns">
       <div class="column">
-        <b-input  placeholder="Dokumentum keresésée"
+        <b-input  placeholder="Dokumentum keresése"
                   type="search"
                   icon-pack="fas"
                   icon="search"
@@ -112,11 +111,20 @@ export default {
 </script>
 
 <style>
+ @import url('https://fonts.googleapis.com/css?family=Offside');
 #app {
   margin:20px;
 }
+.button.is-primary {
+  background-color: #2c56b9!important;
+  box-shadow: 1px 1px 3px #031133;
+}
+.input:focus, .select select:focus, .button:focus {
+  box-shadow: 1px 1px 3px #1a2a52!important;
+  border-color: #345097!important;
+}
 h1.eh {
-   font-size: 40px;
+   font-size: 35px;
    text-align: center;
    font-family: 'Offside', cursive;
    text-shadow: 1px 1px 4px #0038b8;
