@@ -119,6 +119,18 @@ export default {
   background-color: #2c56b9!important;
   box-shadow: 1px 1px 3px #031133;
 }
+.button.is-primary:hover {
+  background-color: #2e4b8f!important;
+  box-shadow: 0px 0px 3px #031133;
+}
+.button.is-primary:focus {
+  background-color: #455d8f!important;
+  box-shadow: -1px -1px 3px #031133;
+}
+.button.is-primary:active {
+  background-color: #491812!important;
+  box-shadow: 0px 0px 1px #773d35;
+}
 .input:focus, .select select:focus, .button:focus {
   box-shadow: 1px 1px 3px #1a2a52!important;
   border-color: #345097!important;
