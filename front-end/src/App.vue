@@ -27,7 +27,7 @@
             <span :key="kszo.id" 
                   v-for="kszo in klsz"
                   class="kszg">
-              <span class="nowrap" @click="addksz(kszo)">
+              <span class="nowrap ksz" @click="addksz(kszo)">
                 <span v-if="kszo.ktip">{{kszo.ktip}}:</span> {{kszo.kulcsszo}}
               </span> &nbsp;<span> </span>
             </span>
@@ -40,7 +40,7 @@
                   v-for="kszo in kivk"
                   class="kszg"
                   @click="kivk = kivk.filter(v => v.id!==kszo.id)">
-              <span class="nowrap">
+              <span class="nowrap ksz">
                 <span v-if="kszo.ktip">{{kszo.ktip}}:</span> {{kszo.kulcsszo}}
               </span> &nbsp;<span> </span>
               <b-icon
@@ -119,8 +119,25 @@ export default {
 </script>
 
 <style>
+/*
+font-family: 'Patrick Hand', cursive;
+font-family: 'Kaushan Script', cursive;
+font-family: 'Kodchasan', sans-serif;
+font-family: 'Parisienne', cursive;
+font-family: 'Berkshire Swash', cursive;
+font-family: 'Aclonica', sans-serif;
+font-family: 'Itim', cursive;
+font-family: 'Annie Use Your Telescope', cursive;
+font-family: 'Six Caps', sans-serif;
+font-family: 'Offside', cursive;
+*/
+@import url('https://fonts.googleapis.com/css?family=Aclonica|Annie+Use+Your+Telescope|Berkshire+Swash|Itim|Kaushan+Script|Kodchasan|Parisienne|Patrick+Hand|Six+Caps');
 #app {
   margin:20px;
+  font-family: 'Parisienne', cursive;
+}
+.ksz {
+  font-family: 'Aclonica', sans-serif;
 }
 .button.is-primary {
   background-color: #2c56b9!important;
@@ -129,6 +146,9 @@ export default {
 .button.is-primary:hover {
   background-color: #2e4b8f!important;
   box-shadow: 1px 1px 3px #031133;
+}
+.input, .button, select {
+  font-family: 'Itim', cursive;
 }
 .input:focus, .select select:focus, .button:focus {
   box-shadow: 1px 1px 3px #1a2a52!important;

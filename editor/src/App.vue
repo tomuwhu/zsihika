@@ -111,7 +111,7 @@ export default {
 </script>
 
 <style>
- @import url('https://fonts.googleapis.com/css?family=Offside');
+@import url('https://fonts.googleapis.com/css?family=Aclonica|Annie+Use+Your+Telescope|Berkshire+Swash|Itim|Kaushan+Script|Kodchasan|Offside|Parisienne|Patrick+Hand|Six+Caps');
 #app {
   margin:20px;
 }
@@ -134,6 +134,9 @@ export default {
 .input:focus, .select select:focus, .button:focus {
   box-shadow: 1px 1px 3px #1a2a52!important;
   border-color: #345097!important;
+}
+.input, .button, select {
+  font-family: 'Itim', cursive;
 }
 h1.eh {
    font-size: 35px;
