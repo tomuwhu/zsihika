@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm i&npm i --prefix ./front-end&npm i --prefix ./editor",
-    "start": "forever start index.js&npm run build --prefix ./front-end&npm run build --prefix ./editor",
+    "start": "forever start index.js&npm run build --prefix ./front-end&npm run build --prefix ./editor"
   },
   "repository": {
     "type": "git",
