@@ -55,6 +55,7 @@
 </template>
 
 <script>
+document.title="Kulcsszavazó"
 let backend="http://localhost:3000"
 export default {
   name: 'app',

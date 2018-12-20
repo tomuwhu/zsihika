@@ -58,6 +58,7 @@
 
 <script>
 import Header from './components/Header.vue'
+document.title="Kereső"
 let fif = new Map() 
 fif.set('szzsak', { 
   hu: 'Szegedi Zsidó Archívum - Keresés',
