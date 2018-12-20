@@ -4,7 +4,8 @@
   "description": "Kereső  a Szegedi Zsidó Hitközösség Archívumához",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon node index.js"
+    "test": "nodemon node index.js",
+    "start": "forever start index.js&npm run build --prefix ./front-end&npm run build --prefix ./editor"
   },
   "repository": {
     "type": "git",

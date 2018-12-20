@@ -3,6 +3,7 @@ const cors = require('cors')
 app.use(require('body-parser').json())
 const database_name = "zshka"
 const static_folder = "front-end/dist/"
+const editor_folder = "editor/dist/"
 const mysql = require('mysql')
 
 const sql = mysql.createConnection({
@@ -45,5 +46,6 @@ app.get(/docs/, (req, res) => {
 })
 
 app.use('/', express.static(static_folder))
+app.use('/editor', express.static(editor_folder))
 
 app.listen(3000)
