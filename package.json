@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nodemon node index.js",
     "start": "forever start index.js&npm run build --prefix ./front-end&npm run build --prefix ./editor",
-    "setup": "npm i&npm i --prefix ./front-end&npm i --prefix ./editor"
+    "config": "npm i&npm i --prefix ./front-end&npm i --prefix ./editor"
   },
   "repository": {
     "type": "git",
