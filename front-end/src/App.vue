@@ -72,7 +72,7 @@ fif.set('kiv_ksz', {
   hu: 'Kiválasztott kulcsszavak:',
   en: 'Selected keywords:'
 })
-let backend="http://localhost:3000"
+let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
 export default {
   name: 'app',
   data: () => ({
