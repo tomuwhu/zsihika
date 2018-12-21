@@ -7,9 +7,9 @@ const editor_folder = "editor/dist/"
 const mysql = require('mysql')
 
 const sql = mysql.createConnection({
-    host: 'localhost',
+    host: 'mysql',
     user: 'tnemeth',
-    password: 'tom432npm run serve',
+    password: 'tom432',
     database: database_name
 })
 
