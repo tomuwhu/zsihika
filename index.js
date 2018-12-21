@@ -1,7 +1,7 @@
 const app = (express = require('express'))()
 const cors = require('cors')
 app.use(require('body-parser').json())
-const database_name = "zshka"
+const database_name = "bevinfo"
 const static_folder = "front-end/dist/"
 const editor_folder = "editor/dist/"
 const mysql = require('mysql')
