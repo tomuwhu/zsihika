@@ -18,6 +18,7 @@
             placeholder="Dokumentum kiválasztása" 
             v-model="seld"
             v-if="szd.length>1">
+        <option selected></option>
         <option
             v-for="option in szd"
             :value="option.did"
@@ -46,10 +47,14 @@
       </button> &nbsp;
       <span :key="oldal" 
               v-for="oldal in Array(adocs.osz).fill().map( (v,k) => k+1 )">
-      <button class="button is-primary">
+      <button class="button is-primary" @click="aold=oldal">
         {{oldal}}. oldal
       </button> &nbsp;
       </span>
+      <hr>
+      <h3 class="eh">
+      {{adocs.dname}}, <span class="red">{{aold}}. oldal</span> kulcsszavazása
+      </h3>
     </span>
   </div>
 </template>
@@ -62,6 +67,7 @@ export default {
   data: () => ({
     docs: [{did:0}],
     adocs: {did:0},
+    aold: 1,
     dk: ''
   }),
   methods: {
@@ -145,5 +151,16 @@ h1.eh {
    font-family: 'Offside', cursive;
    text-shadow: 1px 1px 4px #0038b8;
    color: #0038b8;
+}
+h3.eh {
+   font-size: 20px;
+   text-align: center;
+   font-family: 'Offside', cursive;
+   text-shadow: 1px 1px 4px #0038b8;
+   color: #0038b8;
+}
+span.red {
+  text-shadow: 1px 1px 4px #b34888;
+  color: #b33d3e;
 }
 </style>
