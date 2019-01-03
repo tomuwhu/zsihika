@@ -56,10 +56,10 @@
     <hr>
     <div v-if="kivk.length" style="text-align:center;">
       <span v-if="docs.length">
-        <div :kex="i" 
+        <div :key="i" 
               v-for="(doc,i) in docs"
               class="docs">
-          {{doc.dname}}
+          {{doc.dname}} ({{doc.osz}}.oldal)
         </div>
       </span>
       <span v-else>
@@ -89,8 +89,8 @@ fif.set('kiv_nincst', {
   hu: 'Nincs találat, szűkítse a kulcsszólistát!',
   en: 'No results, narrow your keyword list!'
 })
-//let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
-let backend="http://localhost:3000"
+let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
+//let backend="http://localhost:3000"
 export default {
   name: 'app',
   data: () => ({

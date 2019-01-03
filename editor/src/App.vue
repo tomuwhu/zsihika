@@ -18,7 +18,7 @@
             placeholder="Dokumentum kiválasztása" 
             v-model="seld"
             v-if="szd.length>1"
-            @change.native="sc(aold)">
+            @change.native="sc(1)">
         <option selected></option>
         <option
             v-for="option in szd"
@@ -45,27 +45,28 @@
     <span v-if="adocs.dname">
       <span class="columns">
         <div class="column">
-          <button class="button" @click="newdocname=newdocname?'':adocs.dname">
+          <button class="button" @click="newdocname=newdocname?'':adocs.dname.split('_').map((v,i)=>i===6?Number(v)+1:v).join('_')">
             {{adocs.dname}}
           </button> &nbsp;
           <span :key="oldal" 
-                  v-for="oldal in Array(adocs.osz).fill().map( (v,k) => k+1 )">
+                v-if="adocs.osz>1"
+                v-for="oldal in Array(adocs.osz).fill().map( (v,k) => k+1 )">
             <button class="button is-primary" @click="sc(aold===oldal?false:aold=oldal)">
               {{oldal}}. oldal
             </button> &nbsp;
           </span>
+          <button class="button is-danger" @click="oldalha()" title="Új oldal">
+              +
+          </button> &nbsp;
         </div>
           <div class="column" v-if="newdocname">
             Új dokumentum: <b-input type="text" v-model="newdocname" /><br>
             Oldalszám: <b-input type="number" v-model="ndosz" /><br>
-            <button class="button">Létrehoz</button>
+            <button class="button is-danger" @click="newdoc()">Létrehoz</button> &nbsp;
+            <button class="button" @click="newdocname=''">Mégse</button>
           </div>
       </span>
       <hr>
-      <h3 class="eh">
-      
-      </h3>
-
       <div>
         <div class="columns">
           <div class="column is-narrow">
@@ -78,6 +79,18 @@
                         @keyup.native.enter="addk()">
               </b-input>
               <br>
+              <div v-if="kk && !kl.filter( v => RegExp(kk,'i').test(v.kulcsszo) ).length" style="text-align:center;">
+                <b>Kulcsszó felvétele mint új:</b>
+                <br><br>
+                <span v-if="!Number(kk) && kk[0].toUpperCase()===kk[0] && kk.length>2">
+                <button @click="uksz('név')" class="button uksz">név</button>&nbsp;</span>
+                <span v-if="Number(kk)>1800 && Number(kk)<=2020">
+                <button @click="uksz('év')" class="button uksz">év</button>&nbsp;</span>
+                <button @click="uksz('törzsszám')" class="button uksz">törzsszám</button>&nbsp;
+                <span v-if="!Number(kk) && kk[0].toUpperCase()===kk[0] && kk.length>2">
+                <button @click="uksz('helység')" class="button uksz">helység</button>&nbsp;</span>
+                <button @click="uksz('')" class="button uksz">.nd.</button>&nbsp;
+              </div>
               <span :key="kszo.id" 
                     v-for="kszo in klsz"
                     class="kszg">
@@ -90,12 +103,16 @@
           <div class="column">
             <div class="box">
               <p class="title is-5">
-                {{adocs.dname}}, <span class="red">{{aold}}. oldal</span> kulcsszavai:
+                {{adocs.dname}}<span v-if="adocs.osz>1" class="red">, {{aold}}. oldal</span> kulcsszavai:
               </p>
+              <button 
+                    v-if="aold===adocs.osz && !kivk.length" 
+                    class="button is-danger"
+                    @click="oldaltorl()">Oldal törlése</button>
               <span :key="kszo.id" 
                     v-for="kszo in kivk"
                     class="kszg"
-                    @click="kivk = kivk.filter(v => v.id!==kszo.id)">
+                    @click="delksz(kszo.id)">
                 <span class="nowrap ksz">
                   <span v-if="kszo.ktip">{{kszo.ktip}}:</span> {{kszo.kulcsszo}}
                 </span> &nbsp;<span> </span>
@@ -116,8 +133,8 @@
 
 <script>
 document.title="Kulcsszavazó"
-//let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
-let backend="http://localhost:3000"
+let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
+//let backend="http://localhost:3000"
 export default {
   name: 'app',
   data: () => ({
@@ -132,12 +149,54 @@ export default {
     ndosz: 1
   }),
   methods: {
+    uksz(type) {
+      this.axios
+          .post(`${ backend }/ujksz`, { kulcsszo: this.kk, ktip: type }  )
+          .then( resp => {  
+            let ujkszo = { id: resp.data.insertedId, kulcsszo: this.kk, ktip: type }   
+            this.addksz( ujkszo )
+          })
+    },
+    oldaltorl() {
+      this.axios
+          .post(`${ backend }/removeujold`, this.adocs  )
+          .then( resp => {     
+            this.sc(this.aold=--this.adocs.osz)
+          })
+    },
+    oldalha() {
+      this.axios
+          .post(`${ backend }/addujold`, this.adocs  )
+          .then( resp => {
+            this.aold=++this.adocs.osz
+            this.kivk=[]
+          })
+    },
+    newdoc() {
+      let year=this.newdocname.split('_')[5]
+      this.axios
+          .post(`${ backend }/newdoc`, {dname: this.newdocname, osz: this.ndosz, year })
+          .then( resp => {
+            this.docs.push({ did: resp.body.insertedId, dname: this.newdocname, osz: this.ndosz, year })
+            this.newdocname=''
+          })
+    },
+    delksz(kszid) {
+      this.axios
+          .post(`${ backend }/delksz`, {docs: this.adocs.did, osz: this.aold, ksz: kszid })
+          .then( resp => {
+            this.kivk = this.kivk.filter(v => v.id!==kszid)
+            this.kivk = this.kivk.sort( (a,b) => (a.kulcsszo.localeCompare(b.kulcsszo)) )
+            this.kk=''
+          })
+    },
     sc(x) {
       if (x) {
         this.axios
           .post(`${ backend }/kszl`, {docs: this.adocs.did, osz: x})
           .then( resp => {
             this.kivk = resp.data.sort( (a,b) => (a.kulcsszo.localeCompare(b.kulcsszo)) )
+            this.aold = x
           })
       }
     },
@@ -147,13 +206,17 @@ export default {
       }
     },
     addksz(kszo) {
-      this.kivk
-          .filter( v => 
-            v.id===kszo.id 
-          )
-          .length ? 1 : this.kivk.push(kszo)
-      this.kivk = this.kivk.sort( (a,b) => (a.kulcsszo.localeCompare(b.kulcsszo)) )
-      this.kk=''
+      this.axios
+          .post(`${ backend }/addksz`, {docs: this.adocs.did, osz: this.aold, ksz: kszo.id })
+          .then( resp => {
+            this.kivk
+                .filter( v => 
+                  v.id===kszo.id 
+                )
+                .length ? 1 : this.kivk.push(kszo)
+            this.kivk = this.kivk.sort( (a,b) => (a.kulcsszo.localeCompare(b.kulcsszo)) )
+            this.kk=''
+          })
     },
     wd() {
       if (this.szd.length===1) {
@@ -233,6 +296,27 @@ span.kszg {
 }
 span.kszg:hover {
   text-shadow: 1px 1px 3px black;
+}
+.button.uksz {
+  background-color: #435283!important;
+  box-shadow: 1px 1px 3px #46578f;
+  padding:4px;
+  color: white;
+}
+.button.uksz:hover {
+  background-color: #bdc97d!important;
+  box-shadow: 1px 1px 3px #363b8b;
+}
+.button.uksz:focus {
+  color: white;
+}
+.button.is-danger {
+  background-color: #9e386b!important;
+  box-shadow: 1px 1px 3px #a02c40;
+}
+.button.is-danger:hover {
+  background-color: #b469aa!important;
+  box-shadow: 0px 0px 3px #8f2a2a;
 }
 .button.is-primary {
   background-color: #2c56b9!important;
