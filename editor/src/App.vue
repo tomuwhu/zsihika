@@ -17,7 +17,8 @@
       <b-select 
             placeholder="Dokumentum kiválasztása" 
             v-model="seld"
-            v-if="szd.length>1">
+            v-if="szd.length>1"
+            @change.native="sc(aold)">
         <option selected></option>
         <option
             v-for="option in szd"
@@ -42,14 +43,23 @@
     </div>
     <hr>
     <span v-if="adocs.dname">
-      <button class="button">
-        {{adocs.dname}}
-      </button> &nbsp;
-      <span :key="oldal" 
-              v-for="oldal in Array(adocs.osz).fill().map( (v,k) => k+1 )">
-      <button class="button is-primary" @click="aold=oldal">
-        {{oldal}}. oldal
-      </button> &nbsp;
+      <span class="columns">
+        <div class="column">
+          <button class="button" @click="newdocname=newdocname?'':adocs.dname">
+            {{adocs.dname}}
+          </button> &nbsp;
+          <span :key="oldal" 
+                  v-for="oldal in Array(adocs.osz).fill().map( (v,k) => k+1 )">
+            <button class="button is-primary" @click="sc(aold===oldal?false:aold=oldal)">
+              {{oldal}}. oldal
+            </button> &nbsp;
+          </span>
+        </div>
+          <div class="column" v-if="newdocname">
+            Új dokumentum: <b-input type="text" v-model="newdocname" /><br>
+            Oldalszám: <b-input type="number" v-model="ndosz" /><br>
+            <button class="button">Létrehoz</button>
+          </div>
       </span>
       <hr>
       <h3 class="eh">
@@ -106,8 +116,8 @@
 
 <script>
 document.title="Kulcsszavazó"
-let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
-//let backend="http://localhost:3000"
+//let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
+let backend="http://localhost:3000"
 export default {
   name: 'app',
   data: () => ({
@@ -117,13 +127,23 @@ export default {
     kl: [],
     adocs: {did:0},
     aold: 1,
-    dk: ''
+    dk: '',
+    newdocname: '',
+    ndosz: 1
   }),
   methods: {
+    sc(x) {
+      if (x) {
+        this.axios
+          .post(`${ backend }/kszl`, {docs: this.adocs.did, osz: x})
+          .then( resp => {
+            this.kivk = resp.data.sort( (a,b) => (a.kulcsszo.localeCompare(b.kulcsszo)) )
+          })
+      }
+    },
     addk() {
       if (this.klsz.length===1) {
-        this.kivk.push(this.klsz[0])
-        this.kk=''
+        this.addksz(this.klsz[0])
       }
     },
     addksz(kszo) {
@@ -132,6 +152,7 @@ export default {
             v.id===kszo.id 
           )
           .length ? 1 : this.kivk.push(kszo)
+      this.kivk = this.kivk.sort( (a,b) => (a.kulcsszo.localeCompare(b.kulcsszo)) )
       this.kk=''
     },
     wd() {

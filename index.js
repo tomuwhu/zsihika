@@ -7,8 +7,8 @@ const editor_folder = "editor/dist/"
 const mysql = require('mysql')
 
 const sql = mysql.createConnection({
-    host: 'mysql',
-    //host: 'localhost',
+    //host: 'mysql',
+    host: 'localhost',
     user: 'tnemeth',
     password: 'tom432',
     database: database_name
@@ -27,6 +27,23 @@ app.post(/docsszurve/, (req, res) => {
                         ( ${ szures } )
         GROUP BY did
         HAVING n = ${ n }
+        `,
+        (err, dl) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send(dl)
+            }
+        })
+})
+
+app.post(/kszl/, (req, res) => {
+    sql.query( `
+            SELECT * 
+            FROM kt,ksz
+            WHERE kt.ksz=ksz.id and
+                        docid=${req.body.docs}
+            AND osz=${req.body.osz}
         `,
         (err, dl) => {
             if (err) {
