@@ -195,6 +195,20 @@ export default {
 #app {
   margin:20px;
 }
+.ksz {
+  font-family: 'Aclonica', sans-serif;
+}
+.li {
+  cursor:pointer ;
+}
+.li:hover {
+  box-shadow: 0px 0px 3px black;
+}
+span.kszg {
+  margin: 8px;
+  padding:4px;
+  cursor: pointer;
+}
 .button.is-primary {
   background-color: #2c56b9!important;
   box-shadow: 1px 1px 3px #031133;
