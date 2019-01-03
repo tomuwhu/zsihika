@@ -39,7 +39,7 @@
             <span :key="kszo.id" 
                   v-for="kszo in kivk"
                   class="kszg"
-                  @click="kivk = kivk.filter(v => v.id!==kszo.id)">
+                  @click="remksz(kszo.id)">
               <span class="nowrap ksz">
                 <span v-if="kszo.ktip">{{kszo.ktip}}:</span> {{kszo.kulcsszo}}
               </span> &nbsp;<span> </span>
@@ -52,6 +52,19 @@
           </div>
         </div>
       </div>
+    </div>
+    <hr>
+    <div v-if="kivk.length" style="text-align:center;">
+      <span v-if="docs.length">
+        <div :kex="i" 
+              v-for="(doc,i) in docs"
+              class="docs">
+          {{doc.dname}}
+        </div>
+      </span>
+      <span v-else>
+        {{feliratok.get('kiv_nincst')[currlang]}}
+      </span>
     </div>
   </div>
 </template>
@@ -72,7 +85,12 @@ fif.set('kiv_ksz', {
   hu: 'Kiválasztott kulcsszavak:',
   en: 'Selected keywords:'
 })
+fif.set('kiv_nincst', { 
+  hu: 'Nincs találat, szűkítse a kulcsszólistát!',
+  en: 'No results, narrow your keyword list!'
+})
 let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
+//let backend="http://localhost:3000"
 export default {
   name: 'app',
   data: () => ({
@@ -80,7 +98,8 @@ export default {
     currlang: 'hu',
     kk: '',
     kl: [],
-    kivk: []
+    kivk: [],
+    docs: []
   }),
   methods: {
     addk() {
@@ -96,6 +115,19 @@ export default {
           )
           .length ? 1 : this.kivk.push(kszo)
       this.kk=''
+      this.axios
+        .post(`${ backend }/docsszurve`,{ kszol: this.kivk })
+        .then( resp => {
+          this.docs = resp.data
+        })
+    },
+    remksz(id) {
+      this.kivk = this.kivk.filter(v => v.id!==id)
+      this.axios
+        .post(`${ backend }/docsszurve`,{ kszol: this.kivk })
+        .then( resp => {
+          this.docs = resp.data
+        })
     }
   },
   mounted() {
@@ -139,6 +171,14 @@ font-family: 'Offside', cursive;
 }
 .ksz {
   font-family: 'Aclonica', sans-serif;
+}
+div.docs {
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 1px 1px 4px #2e4b8f;
+  background-color: antiquewhite;
+  border-radius: 12px;
+  border: solid 1px brown;
 }
 .button.is-primary {
   background-color: #2c56b9!important;

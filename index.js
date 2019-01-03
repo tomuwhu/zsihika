@@ -8,6 +8,7 @@ const mysql = require('mysql')
 
 const sql = mysql.createConnection({
     host: 'mysql',
+    //host: 'localhost',
     user: 'tnemeth',
     password: 'tom432',
     database: database_name
@@ -15,8 +16,28 @@ const sql = mysql.createConnection({
 
 app.use(cors())
 
+app.post(/docsszurve/, (req, res) => {
+    let szures =  req.body.kszol.map( v => `kt.ksz = ${v.id}`).join(' and ')
+    let n = req.body.kszol.length
+    sql.query( `
+        SELECT  did,dname, count(did) n
+        FROM 	docs,kt
+        WHERE 	docs.did = kt.docid	 
+                        AND 
+                        ( ${ szures } )
+        GROUP BY did
+        HAVING n = ${ n }
+        `,
+        (err, dl) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send(dl)
+            }
+        })
+})
+
 app.get(/kulcsszavak/, (req, res) => {
-    let nyt = {}
     sql.query(
         `SELECT     *
          FROM       ksz 
@@ -31,7 +52,6 @@ app.get(/kulcsszavak/, (req, res) => {
 })
 
 app.get(/docs/, (req, res) => {
-    let nyt = {}
     sql.query(
         `SELECT     *
          FROM       docs 

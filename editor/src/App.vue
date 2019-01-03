@@ -107,6 +107,7 @@
 <script>
 document.title="Kulcsszavazó"
 let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
+//let backend="http://localhost:3000"
 export default {
   name: 'app',
   data: () => ({
@@ -208,6 +209,9 @@ span.kszg {
   margin: 8px;
   padding:4px;
   cursor: pointer;
+}
+span.kszg:hover {
+  text-shadow: 1px 1px 3px black;
 }
 .button.is-primary {
   background-color: #2c56b9!important;
