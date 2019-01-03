@@ -53,8 +53,53 @@
       </span>
       <hr>
       <h3 class="eh">
-      {{adocs.dname}}, <span class="red">{{aold}}. oldal</span> kulcsszavazása
+      
       </h3>
+
+      <div>
+        <div class="columns">
+          <div class="column is-narrow">
+            <div class="box" style="width: 400px;">
+              <b-input placeholder="Kulcsszó hozzáadása"
+                        type="search"
+                        icon-pack="fas"
+                        icon="search"
+                        v-model="kk"
+                        @keyup.native.enter="addk()">
+              </b-input>
+              <br>
+              <span :key="kszo.id" 
+                    v-for="kszo in klsz"
+                    class="kszg">
+                <span class="nowrap ksz" @click="addksz(kszo)">
+                  <span v-if="kszo.ktip">{{kszo.ktip}}:</span> {{kszo.kulcsszo}}
+                </span> &nbsp;<span> </span>
+              </span>
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <p class="title is-5">
+                {{adocs.dname}}, <span class="red">{{aold}}. oldal</span> kulcsszavai:
+              </p>
+              <span :key="kszo.id" 
+                    v-for="kszo in kivk"
+                    class="kszg"
+                    @click="kivk = kivk.filter(v => v.id!==kszo.id)">
+                <span class="nowrap ksz">
+                  <span v-if="kszo.ktip">{{kszo.ktip}}:</span> {{kszo.kulcsszo}}
+                </span> &nbsp;<span> </span>
+                <b-icon
+                  class="red"
+                  icon="delete"
+                  size="is-small">
+                </b-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </span>
   </div>
 </template>
@@ -66,11 +111,28 @@ export default {
   name: 'app',
   data: () => ({
     docs: [{did:0}],
+    kk: '',
+    kivk: [],
+    kl: [],
     adocs: {did:0},
     aold: 1,
     dk: ''
   }),
   methods: {
+    addk() {
+      if (this.klsz.length===1) {
+        this.kivk.push(this.klsz[0])
+        this.kk=''
+      }
+    },
+    addksz(kszo) {
+      this.kivk
+          .filter( v => 
+            v.id===kszo.id 
+          )
+          .length ? 1 : this.kivk.push(kszo)
+      this.kk=''
+    },
     wd() {
       if (this.szd.length===1) {
         this.adocs=this.szd[0]
@@ -91,8 +153,19 @@ export default {
         .then( resp => {
           this.docs = resp.data
         })
+    this.axios
+        .get(`${ backend }/kulcsszavak`)
+        .then( resp => {
+          this.kl = resp.data
+        })
   },
   computed: {
+    klsz() {
+      let szk = this .kl
+                  .filter( v => RegExp(this.kk,'i').test(v.kulcsszo) )
+                  .filter( v => !this.kivk.find( q => q.id===v.id ) )
+      return  szk.length<10 ? szk : []
+    },
     seld: {
       get() {
         return this.adocs.did
