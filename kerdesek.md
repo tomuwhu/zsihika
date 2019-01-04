@@ -6,3 +6,4 @@
 
 ## A dokumentumok mind magyar nyelvűek-e?
 
+## Autentikáció?

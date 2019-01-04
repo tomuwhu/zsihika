@@ -165,6 +165,7 @@ app.get(/docs/, (req, res) => {
 })
 
 app.use('/', express.static(static_folder))
+
 app.use('/editor', express.static(editor_folder))
 
 app.listen(3000)
