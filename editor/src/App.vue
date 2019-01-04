@@ -48,12 +48,13 @@
           <button class="button" @click="newdocname=newdocname?'':adocs.dname.split('_').map((v,i)=>i===6?Number(v)+1:v).join('_')">
             {{adocs.dname}}
           </button> &nbsp;
-          <span :key="oldal" 
-                v-if="adocs.osz>1"
-                v-for="oldal in Array(adocs.osz).fill().map( (v,k) => k+1 )">
-            <button class="button is-primary" @click="sc(aold===oldal?false:aold=oldal)">
-              {{oldal}}. oldal
-            </button> &nbsp;
+          <span v-if="adocs.osz>1">
+            <span :key="oldal" 
+                  v-for="oldal in Array(adocs.osz).fill().map( (v,k) => k+1 )">
+              <button class="button is-primary" @click="sc(aold===oldal?false:aold=oldal)">
+                {{oldal}}. oldal
+              </button> &nbsp;
+            </span>
           </span>
           <button class="button is-danger" @click="oldalha()" title="Új oldal">
               +
@@ -135,6 +136,7 @@
 document.title="Kulcsszavazó"
 let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
 //let backend="http://localhost:3000"
+let backend=":3000/"
 export default {
   name: 'app',
   data: () => ({
