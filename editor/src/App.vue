@@ -134,9 +134,9 @@
 
 <script>
 document.title="Kulcsszavazó"
-let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
+//let backend="http://www.inf.u-szeged.hu/u/tnemeth/"
 //let backend="http://localhost:3000"
-let backend=":3000/"
+let backend="http://szegedjewisharchive.org:3000/"
 export default {
   name: 'app',
   data: () => ({
