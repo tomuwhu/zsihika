@@ -5,6 +5,8 @@ const database_name = "bevinfo"
 const static_folder = "front-end/dist/"
 const editor_folder = "editor/dist/"
 const mysql = require('mysql')
+const fileUpload = require('express-fileupload')
+app.use(fileUpload())
 
 const sql = mysql.createConnection({
     //host: 'mysql',
@@ -15,6 +17,25 @@ const sql = mysql.createConnection({
 })
 
 app.use(cors())
+
+app.post('/upload', (req, res) => {
+    //console.log(res.files)
+    console.log(req.files)
+    
+    res.send('szeva')
+    /*
+    if (Object.keys(req.files).length == 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let sampleFile = req.files.sampleFile;
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv('/Telemetry/filename.jpg', function(err) {
+      if (err)
+        return res.status(500).send(err);
+      res.send('File uploaded!');
+    });*/
+} )
 
 app.post(/docsszurve/, (req, res) => {
     let szures =  req.body.kszol.map( v => `kt.ksz = ${v.id}`).join(' or ')

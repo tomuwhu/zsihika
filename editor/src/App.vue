@@ -44,21 +44,26 @@
         </span>  
       </div>
       <div class="column" style="text-align:right;">
-        
         <b-field>
-            <b-upload v-model="file" drag-drop >
+            <b-upload v-model="file" drag-drop>
                 <section style="height:25px; width:200px;">
                     <div class="content has-text-centered">
                         <b-icon icon="upload"
                                 size="is-small">
                         </b-icon>
-                        Fájl feltöltése</p>
+                        <span v-if="file.name">{{file.name}}</span>
+                        <span v-else>
+                          Fájl feltöltése
+                        </span>
                     </div>
                 </section>
-            </b-upload>
+            </b-upload> &nbsp;
+            <button v-if="file.name" 
+                class="button is-danger"
+                @click="f()">
+                Feltöltés
+            </button>
         </b-field>
-
-
       </div>
     </div>
     <hr>
@@ -173,6 +178,17 @@ export default {
     file: []
   }),
   methods: {
+    f() {
+      this.axios
+          .post(
+              'http://localhost:3000/upload/', 
+              this.file
+          )
+          .then( resp => {
+              console.log(resp.data)
+          } )
+      console.log(this.file)
+    },
     uksz(type) {
       this.axios
           .post(`${ backend }/ujksz`, { kulcsszo: this.kk, ktip: type }  )
