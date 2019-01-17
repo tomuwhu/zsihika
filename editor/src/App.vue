@@ -3,7 +3,10 @@
     <h1 class="eh">Szegedi Zsidó Archívum - Kulcsszavazó</h1>
     <br>
     <br>
-    <div class="columns">
+    <div v-if='!/p1.z.0stk/.test(pw)'>
+      <b-input v-model='pw' label='Jelszó megadása'></b-input>
+    </div>  
+    <div v-else class="columns">
       <div class="column">
         <b-input  placeholder="Dokumentum keresése"
                   type="search"
@@ -39,6 +42,23 @@
           <button class="button is-primary" 
                   @click="adocs=szd[0]">Szerkeszt</button>
         </span>  
+      </div>
+      <div class="column" style="text-align:right;">
+        
+        <b-field>
+            <b-upload v-model="file" drag-drop >
+                <section style="height:25px; width:200px;">
+                    <div class="content has-text-centered">
+                        <b-icon icon="upload"
+                                size="is-small">
+                        </b-icon>
+                        Fájl feltöltése</p>
+                    </div>
+                </section>
+            </b-upload>
+        </b-field>
+
+
       </div>
     </div>
     <hr>
@@ -140,6 +160,7 @@ let backend="http://szegedjewisharchive.org:3000/"
 export default {
   name: 'app',
   data: () => ({
+    pw: '',
     docs: [{did:0}],
     kk: '',
     kivk: [],
@@ -148,7 +169,8 @@ export default {
     aold: 1,
     dk: '',
     newdocname: '',
-    ndosz: 1
+    ndosz: 1,
+    file: []
   }),
   methods: {
     uksz(type) {
@@ -179,7 +201,7 @@ export default {
       this.axios
           .post(`${ backend }/newdoc`, {dname: this.newdocname, osz: this.ndosz, year })
           .then( resp => {
-            this.docs.push({ did: resp.body.insertedId, dname: this.newdocname, osz: this.ndosz, year })
+            this.docs.push({ did: resp.data.insertedId, dname: this.newdocname, osz: this.ndosz, year })
             this.newdocname=''
           })
     },
